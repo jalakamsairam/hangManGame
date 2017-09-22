@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+
+
+  <div class="jumbotron">
+    <h1 class="text-center">Hangman Game</h1>
+    <h2 class="text-center">Try to guess the animal that's in my mind!</h2>
+  </div>
+<div class="container">
+
+    <div class="row">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Score</h3>
+        </div>
+        <div class="panel-body text-center">
+          <h2 id="score"></h1>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Guess the Word</h3>
+          </div>
+        <div class="panel-body text-center">
+         <h2 id = "blnk"> </h2> 
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Used Words</h3>
+        </div>
+        <div class="panel-body text-center">
+           <h2 id = "used"> </h2> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    var score = 8;
+    var wordsLibrary = ["cat","dog","donkey","monkey","pig"];
+    let actualWord = wordsLibrary[Math.floor(Math.random()*wordsLibrary.length)];
+    var blanks = blankGenerator(actualWord);
+    var used = [];
+
+  function main(){
+    render(blanks);
+  }
+
+  function render(blanks) {
+    var tempstr = '';
+    var scoreAccess = document.getElementById("score");
+    var access = document.getElementById("blnk");
+    for(let i = 0; i < blanks.length; i++){
+        tempstr += blanks[i]+" ";
+    }
+    access.innerHTML = tempstr;  
+    scoreAccess.innerHTML = score;
+  }
+
+  function scoreCheck(){
+      score --;
+  }
+
+  function blankGenerator(word){
+      var blanks = [];
+      for( let i = 0; i < word.length; i++){
+          blanks.push("_");
+      }
+  return blanks;
+  }
+
+
+  function wordGenerator(letter){
+    if(score == 0 || blanks.indexOf('_') == -1){
+      if(score == 0){
+        alert("You've lost");
+      }
+      else{
+        alert("You've won");
+      }
+    }
+    else{
+      var index = actualWord.indexOf(letter);
+      if(index != -1){
+        blanks[index] = letter;
+        render(blanks);
+      }
+      else{
+        var usedIndex = used.indexOf(letter);
+        if(usedIndex == -1){
+          used.push(letter);
+          scoreCheck();
+        }
+        else{
+          alert("You've already tried "+letter);
+        }
+        renderUsed();
+    }
+  }
+}
+
+  function renderUsed(){
+    var tempstr = ''; 
+    var access = document.getElementById("used");
+    var scoreAccess = document.getElementById("score");
+    for(let i = 0; i < used.length; i++){
+        tempstr += used[i]+" ";
+    }
+    access.innerHTML = tempstr;   
+    scoreAccess.innerHTML = "LIVES: "+score;
+  }
+  
+  document.onkeyup = function(event) {
+    inputLetter = event.key;
+    wordGenerator(inputLetter);
+  }
+
+
+
+  main();
+
+  </script>
+
+
+</body>
+</html>
